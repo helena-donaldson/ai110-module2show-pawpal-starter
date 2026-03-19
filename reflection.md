@@ -34,6 +34,8 @@ Task
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
 
+Yes, I did. I chaned the Task class by adding the attribute pet. This allows the relationship between what task to be associated with what pet to be more clear, as it is possible that there could be two grooming tasks but for two different dogs (for example).
+
 ---
 
 ## 2. Scheduling Logic and Tradeoffs
