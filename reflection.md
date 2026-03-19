@@ -2,10 +2,32 @@
 
 ## 1. System Design
 
+Three core actions:
+- The user should be able to view the daily plan created by the app.
+- The user should be able to add and edit pet care tasks
+- The user should be able to enter information about the pet and the pet owner.
+
 **a. Initial design**
 
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
+
+My inital UML design included four classes: Owner, Pet, Plan, and Task. Plan controls much of the business logic; it generates the schedules based off its given task and a particular owner. Pet, Plan, and Owner mainly hold data with associated getters and setters methods. I included my brainstorming notes below to further elaborate on the responsibilities I assigned to everything.
+
+Brainstorming:
+Owner
+- Attributes: Times availabe, Preferences, List of Pets
+- Methods: Getters & Setters for all attributes
+Pet
+- Attribute: Name
+- Methods: Getter & Setter for attribute
+Plan
+- Attributes: Owner, List of Tasks, Schedule (a string document)
+- Methods: Add task, generate Schedule, Edit task
+
+Task
+- Attributes: Duration and Priority and name
+- Methods: Getters & Setters for all attributes
 
 **b. Design changes**
 
