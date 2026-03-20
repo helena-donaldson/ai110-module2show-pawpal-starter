@@ -48,6 +48,9 @@ if "tasks" not in st.session_state:
 if "schedule" not in st.session_state:
     st.session_state.schedule = ""
 
+if "plan" not in st.session_state:
+    st.session_state.plan = None
+
 # --------- Owner info ---------
 st.subheader("Owner")
 owner_name = st.text_input("Owner name", value="Jordan")
@@ -74,9 +77,8 @@ if st.button("Add pet"):
         st.error("Please enter a pet name.")
 
 if st.session_state.pets:
-    st.write("Current pets:")
-    for pet in st.session_state.pets:
-        st.write(f"- {pet}")
+    pet_data = [{"Name": pet.name, "Species": pet.species.capitalize()} for pet in st.session_state.pets]
+    st.dataframe(pet_data, use_container_width=True)
 else:
     st.info("No pets yet. Add one above.")
 
@@ -111,9 +113,17 @@ else:
             st.error("Please enter a task title.")
 
 if st.session_state.tasks:
-    st.write("Current tasks:")
-    for task in st.session_state.tasks:
-        st.write(f"- {task}")
+    task_data = [
+        {
+            "Task": task.name,
+            "Pet": task.pet.name,
+            "Duration (min)": task.duration,
+            "Priority": task.priority_label().capitalize(),
+            "Status": task.status.capitalize()
+        }
+        for task in st.session_state.tasks
+    ]
+    st.dataframe(task_data, use_container_width=True)
 else:
     st.info("No tasks yet. Add one above.")
 
@@ -126,9 +136,50 @@ if st.button("Generate schedule"):
     owner = Owner(times_available, preferences, st.session_state.pets)
     plan = Plan(owner, st.session_state.tasks)
     st.session_state.schedule = plan.generate_schedule()
+    st.session_state.plan = plan
 
 if st.session_state.schedule:
     st.markdown("### Generated schedule")
-    st.code(st.session_state.schedule)
+    
+    plan = st.session_state.get("plan")
+    if plan:
+        sorted_tasks = plan.sort_by_time()
+        
+        # Display schedule summary metrics
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("Total Tasks", len(sorted_tasks))
+        with col2:
+            total_time = sum(t.duration for t in sorted_tasks)
+            st.metric("Total Duration", f"{total_time} min")
+        with col3:
+            high_priority = len([t for t in sorted_tasks if t.priority == 3])
+            st.metric("High Priority", high_priority)
+        with col4:
+            unique_pets = len(set(t.pet.name for t in sorted_tasks))
+            st.metric("Pets Involved", unique_pets)
+        
+        st.divider()
+        
+        # Display sorted tasks in a professional table
+        with st.expander("📋 Task Order & Details", expanded=True):
+            task_order_data = [
+                {
+                    "Order": i,
+                    "Task": task.name,
+                    "Pet": task.pet.name,
+                    "Duration (min)": task.duration,
+                    "Priority": task.priority_label().capitalize(),
+                    "Scheduled Time": task.time if task.time else "TBD"
+                }
+                for i, task in enumerate(sorted_tasks, 1)
+            ]
+            st.dataframe(task_order_data, use_container_width=True)
+        
+        st.divider()
+        
+        # Display the full schedule
+        st.markdown("### ⏰ Full Schedule")
+        st.code(st.session_state.schedule, language="text")
 else:
     st.info("Generate a schedule to see the plan.")

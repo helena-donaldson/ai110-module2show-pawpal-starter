@@ -44,3 +44,17 @@ pip install -r requirements.txt
 
 ## Smarter Scheduling
 The schedule generation system utilizes advanced sorting, filtering, and conflict detection features that allows for an excellent user experience.
+
+## Features
+- Implements scheduling through examining task time and duration, and well as owner priorities
+- Allows for the addition and editing of tasks
+- Allows for the additon of pets
+- Allows for the editing of owner's priorities of what tasks to accomplish first
+
+## 📸 Demo
+
+Note: App was too long to include everything in one screenshot, so this illustrates the scheduling feature.
+
+<a href="app_example.png">
+  <img src="app_example.png" alt="App Example">
+</a>
