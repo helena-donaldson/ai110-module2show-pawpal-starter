@@ -45,10 +45,14 @@ Yes, I did. I chaned the Task class by adding the attribute pet. This allows the
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
 - How did you decide which constraints mattered most?
 
+My scheduler considers first (therefore mattering the most) the time at which the events occur- writing a message on the screen if two tasks have the same time. I feel like time is the most important factor because owners can't do two events at once, so it is the most limiting factor of what is available. It still considers priority and duration though, as secondary factors.
+
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
 - Why is that tradeoff reasonable for this scenario?
+
+A tradeoff my scheduler makes is that it only considers preferences for short vs long tasks, that way it is more quanitifiable over what tasks should be preferenced vs. what should not be. It is a reasonable tradeoff because we were never give requirements specifically about what kind of preferences of owners we should take into account.
 
 ---
 
